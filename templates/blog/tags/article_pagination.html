@@ -1,9 +1,10 @@
 {% if page_obj.paginator.num_pages > 1 %}
-<nav class="flex items-center justify-center gap-1 mt-8 pt-6 border-t border-border" role="navigation" aria-label="分页导航">
+<nav class="flex flex-col items-center gap-4 mt-8 pt-6 border-t-3 border-solid border-[#444] dark:border-[#555]" role="navigation" aria-label="分页导航">
+    <div class="flex items-center justify-center gap-1">
     {# Previous #}
     {% if page_obj.has_previous and previous_url %}
         <a href="{{ previous_url }}"
-           class="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card text-sm text-foreground transition-colors hover:bg-secondary"
+           class="inline-flex size-9 items-center justify-center rounded-md border-2 border-[#444] bg-card text-sm font-black text-foreground transition-all hover:bg-[#ff6b6b] hover:text-white hover:border-[#ff6b6b] dark:border-[#555]"
            rel="prev"
            aria-label="上一页">
             <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -11,7 +12,7 @@
             </svg>
         </a>
     {% else %}
-        <span class="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card text-sm text-muted-foreground/40 cursor-not-allowed">
+        <span class="inline-flex size-9 items-center justify-center rounded-md border-2 border-[#888]/40 bg-card text-sm text-muted-foreground/40 cursor-not-allowed dark:border-[#666]/40">
             <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
@@ -21,14 +22,14 @@
     {# Page numbers #}
     {% for item in page_range %}
         {% if item.type == 'ellipsis' %}
-            <span class="inline-flex size-9 items-center justify-center text-sm text-muted-foreground">...</span>
+            <span class="inline-flex size-9 items-center justify-center text-sm font-black text-muted-foreground">...</span>
         {% elif item.is_current %}
-            <span class="inline-flex size-9 items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground shadow-sm" aria-current="page">
+            <span class="inline-flex size-9 items-center justify-center rounded-md bg-[#ff6b6b] text-sm font-black text-white border-2 border-[#444] shadow-manga-sm dark:border-[#555]" aria-current="page">
                 {{ item.number }}
             </span>
         {% else %}
             <a href="{{ item.url }}"
-               class="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card text-sm text-foreground transition-colors hover:bg-secondary">
+               class="inline-flex size-9 items-center justify-center rounded-md border-2 border-[#444] bg-card text-sm font-black text-foreground transition-all hover:bg-[#ffe66d] hover:text-[#333] dark:border-[#555]">
                 {{ item.number }}
             </a>
         {% endif %}
@@ -37,7 +38,7 @@
     {# Next #}
     {% if page_obj.has_next and next_url %}
         <a href="{{ next_url }}"
-           class="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card text-sm text-foreground transition-colors hover:bg-secondary"
+           class="inline-flex size-9 items-center justify-center rounded-md border-2 border-[#444] bg-card text-sm font-black text-foreground transition-all hover:bg-[#ff6b6b] hover:text-white hover:border-[#ff6b6b] dark:border-[#555]"
            rel="next"
            aria-label="下一页">
             <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,11 +46,18 @@
             </svg>
         </a>
     {% else %}
-        <span class="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card text-sm text-muted-foreground/40 cursor-not-allowed">
+        <span class="inline-flex size-9 items-center justify-center rounded-md border-2 border-[#888]/40 bg-card text-sm text-muted-foreground/40 cursor-not-allowed dark:border-[#666]/40">
             <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
         </span>
+    {% endif %}
+    </div>
+    {# Manga continue #}
+    {% if page_obj.has_next %}
+        <span class="text-xs font-black text-[#ff6b6b] tracking-widest dark:text-[#ff8787]">◆ つづく →</span>
+    {% else %}
+        <span class="text-xs font-black text-[#4ecdc4] tracking-widest">◆ END</span>
     {% endif %}
 </nav>
 {% endif %}

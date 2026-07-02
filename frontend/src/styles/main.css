@@ -34,19 +34,25 @@
   }
 }
 
-/* ==================== 主题配色方案 CSS 变量 ==================== */
+/* ==================== 漫画格子风 CSS 变量 ==================== */
 :root {
-  /* 默认主题：紫色 Purple Dream */
-  --color-primary-50: 240 249 255;
-  --color-primary-100: 224 242 254;
-  --color-primary-200: 186 230 253;
-  --color-primary-300: 125 211 252;
-  --color-primary-400: 102 126 234;
-  --color-primary-500: 102 126 234;
-  --color-primary-600: 118 75 162;
-  --color-primary-700: 91 33 182;
-  --color-primary-800: 76 29 149;
-  --color-primary-900: 59 7 100;
+  /* 漫画红 Manga Red */
+  --color-manga-red: 255 107 107;       /* #ff6b6b */
+  --color-manga-cyan: 78 205 196;       /* #4ecdc4 */
+  --color-manga-yellow: 255 230 109;    /* #ffe66d */
+  --color-manga-border: 68 68 68;       /* #444444 */
+
+  /* 默认主题：漫画红 */
+  --color-primary-50: 255 245 245;      /* #fff5f5 */
+  --color-primary-100: 255 230 230;     /* #ffe6e6 */
+  --color-primary-200: 255 190 190;     /* #ffbebe */
+  --color-primary-300: 255 150 150;     /* #ff9696 */
+  --color-primary-400: 255 107 107;     /* #ff6b6b */
+  --color-primary-500: 255 107 107;     /* #ff6b6b */
+  --color-primary-600: 230 86 86;       /* #e65656 */
+  --color-primary-700: 200 60 60;       /* #c83c3c */
+  --color-primary-800: 170 40 40;       /* #aa2828 */
+  --color-primary-900: 140 20 20;       /* #8c1414 */
 }
 
 /* 紫色主题 - Purple Dream */
@@ -171,22 +177,22 @@ body[data-color-scheme="teal"] {
 
 /* ==================== 语义化 CSS 变量系统 (对标 Next.js) ==================== */
 :root {
-  /* 基础色 - 亮色模式 - 使用OKLCH色彩空间获得更好的感知均匀性 */
-  --background: 249 250 251;           /* rgb(249 250 251) - 柔和的灰白背景 */
-  --foreground: 17 24 39;              /* rgb(17 24 39) - 深灰色文本 */
+  /* 基础色 - 亮色模式 - 漫画格子风 */
+  --background: 250 250 250;           /* #fafafa - 漫画白底 */
+  --foreground: 51 51 51;              /* #333333 - 深灰文本 */
 
   /* 卡片 */
-  --card: 255 255 255;                 /* rgb(255 255 255) - 纯白卡片 */
-  --card-foreground: 17 24 39;         /* rgb(17 24 39) - 卡片文本色 */
+  --card: 255 255 255;                 /* #ffffff - 纯白卡片 */
+  --card-foreground: 51 51 51;         /* #333333 */
 
   /* Popover浮层 */
-  --popover: 255 255 255;              /* rgb(255 255 255) */
-  --popover-foreground: 17 24 39;      /* rgb(17 24 39) */
+  --popover: 255 255 255;
+  --popover-foreground: 51 51 51;
 
-  /* 边框和输入 */
-  --border: 229 231 235;               /* rgb(229 231 235) - 边框色 */
-  --input: 229 231 235;                /* rgb(229 231 235) - 输入框边框 */
-  --ring: var(--color-primary-500);   /* 使用主题色作为聚焦环 */
+  /* 边框和输入 - 漫画粗边框 */
+  --border: 68 68 68;                   /* #444444 - 漫画粗黑边框 */
+  --input: 68 68 68;                    /* #444444 */
+  --ring: var(--color-primary-500);
 
   /* 静音色 */
   --muted: 243 244 246;                /* rgb(243 244 246) - 静音背景 */
@@ -208,13 +214,14 @@ body[data-color-scheme="teal"] {
   --destructive: 239 68 68;            /* rgb(239 68 68) - 红色 */
   --destructive-foreground: 255 255 255;
 
-  /* 圆角系统 */
-  --radius: 0.5rem;                    /* 8px - 基准圆角 */
+  /* 圆角系统 - 漫画风用直角 */
+  --radius: 0;                         /* 漫画不需要圆角 */
 
-  /* 阴影系统 - 使用更柔和的阴影 */
-  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-elevated: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* 阴影系统 - 漫画偏移阴影 */
+  --shadow-card: 4px 4px 0 rgb(var(--color-manga-border));
+  --shadow-card-hover: 6px 6px 0 rgb(var(--color-manga-border));
+  --shadow-elevated: 6px 6px 0 rgb(var(--color-manga-border));
+  --shadow-manga-sm: 2px 2px 0 rgb(var(--color-manga-border));
 }
 
 /* 深色模式变量 */
@@ -229,8 +236,8 @@ body[data-color-scheme="teal"] {
   --popover: 30 41 59;                 /* rgb(30 41 59) */
   --popover-foreground: 226 232 240;   /* rgb(226 232 240) */
 
-  --border: 51 65 85;                  /* rgb(51 65 85) - Slate-700 深色边框 */
-  --input: 51 65 85;                   /* rgb(51 65 85) - 输入框边框 */
+  --border: 85 85 85;                  /* #555555 - 漫画暗色边框 */
+  --input: 85 85 85;                   /* #555555 */
 
   --muted: 51 65 85;                   /* rgb(51 65 85) - 静音背景 */
   --muted-foreground: 148 163 184;     /* rgb(148 163 184) - Slate-400 静音文本 */
@@ -238,10 +245,11 @@ body[data-color-scheme="teal"] {
   --secondary: 51 65 85;               /* rgb(51 65 85) - 次要背景 */
   --secondary-foreground: 226 232 240; /* rgb(226 232 240) - 次要文本 */
 
-  /* 深色模式阴影 - 使用更深更自然的阴影 */
-  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
-  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-  --shadow-elevated: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+  /* 深色模式阴影 - 漫画偏移阴影暗色版 */
+  --shadow-card: 4px 4px 0 rgb(85 85 85);
+  --shadow-card-hover: 6px 6px 0 rgb(85 85 85);
+  --shadow-elevated: 6px 6px 0 rgb(85 85 85);
+  --shadow-manga-sm: 2px 2px 0 rgb(85 85 85);
 }
 
 /* ==================== 基础样式层 ==================== */
@@ -268,35 +276,23 @@ body[data-color-scheme="teal"] {
     @apply scroll-smooth antialiased;
   }
 
-  /* Body基础样式 - 现代化柔和配色 */
+  /* Body基础样式 - 漫画格子风 */
   body {
-    /* 亮色模式：柔和的灰白背景(#f9fafb)，避免纯白刺眼 */
-    @apply bg-gray-50;
-    /* 暗色模式：深Slate背景(#0f172a)，比纯黑更现代 */
-    @apply dark:bg-slate-900;
-    /* 文本色：深灰色而非纯黑，更柔和 */
-    @apply text-gray-800;
-    /* 暗色模式文本：柔和的灰白色(#e2e8f0) */
-    @apply dark:text-slate-100;
-    @apply font-sans;
-    line-height: 1.75; /* 舒适的阅读行高 */
-    font-size: 1rem; /* 16px基准字体 */
+    @apply bg-[#fcfcf9] dark:bg-[#1e1e2e] text-[#1a1a1a] dark:text-[#ddd] font-sans;
+    line-height: 1.75;
+    font-size: 1rem;
   }
 
   /* 链接样式 */
   a {
-    @apply text-primary-500 hover:text-primary-600 transition-colors duration-200;
-    @apply dark:text-primary-400 dark:hover:text-primary-300;
+    @apply text-[#e53935] hover:text-[#c62828] transition-colors duration-200 font-bold;
+    @apply dark:text-[#ff6b6b] dark:hover:text-[#ff8a80];
   }
 
-  /* 标题样式 - 清晰的视觉层次，现代化柔和配色 */
+  /* 标题样式 - 漫画粗黑体 */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
-    /* 亮色模式：深灰色(#1f2937)而非纯黑，更柔和现代 */
-    @apply text-gray-800;
-    /* 暗色模式：亮灰白色(#f1f5f9)，高对比但不刺眼 */
-    @apply dark:text-slate-100;
-    line-height: 1.25; /* 紧凑的标题行高 */
+    @apply font-black leading-tight;
+    @apply text-[#1a1a1a] dark:text-white;
   }
 
   /* 排版比例 - 明显的层次梯度 */
@@ -354,11 +350,11 @@ body[data-color-scheme="teal"] {
     @apply max-w-full h-auto;
   }
 
-  /* 代码块 */
-  /* 内联代码 */
+  /* 代码块 - 漫画风格 */
   code {
-    @apply px-1.5 py-0.5 bg-gray-100 rounded text-sm;
-    color: #24292e;
+    @apply px-1.5 py-0.5 border border-[#ddd] dark:border-[#555] text-sm;
+    background-color: #f5f0eb;
+    color: #333;
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   }
 
@@ -371,14 +367,21 @@ body[data-color-scheme="teal"] {
     color: #d4d4d4 !important;
   }
 
-  /* 代码块容器 */
+  /* 代码块容器 - 漫画风格 */
   pre {
-    @apply p-3 md:p-4 rounded-lg overflow-x-auto mb-4;
+    @apply p-3 md:p-4 overflow-x-auto mb-4;
     @apply text-sm md:text-base;
-    background-color: #f9f9f9;
-    border: 1px solid #e1e4e8;
+    background-color: #fcfcf9;
+    border: 2px solid #1a1a1a;
+    box-shadow: 3px 3px 0 #ddd;
     max-width: 100%;
     -webkit-overflow-scrolling: touch;
+  }
+  .dark pre,
+  [data-theme="dark"] pre {
+    background-color: #2a2a3e;
+    border-color: #555;
+    box-shadow: 3px 3px 0 #444;
   }
 
   /* 代码块自定义scrollbar样式 - 细小、半透明 */
@@ -3047,6 +3050,190 @@ img[loading="lazy"][src] {
   .site-content {
     @apply w-full;
   }
+}
+
+/* ==================== 🎨 漫画格子风组件 ==================== */
+@layer components {
+  /* Manga Card — 文章卡片漫画风格 */
+  .manga-card {
+    @apply border-2 border-[#444] rounded-none bg-white;
+    box-shadow: 4px 4px 0 #444;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .manga-card:hover {
+    box-shadow: 6px 6px 0 #444;
+    transform: translate(-1px, -1px);
+  }
+
+  /* Manga Bubble — 对话气泡提示框 */
+  .manga-bubble {
+    @apply relative border-2 border-[#444] rounded-none bg-[#fff5f5] px-4 py-3;
+    box-shadow: 3px 3px 0 #444;
+  }
+  .manga-bubble::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #444;
+  }
+  .manga-bubble::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 18px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #fff5f5;
+  }
+
+  /* Manga Tag — 漫画标签 */
+  .manga-tag {
+    @apply inline-flex items-center gap-1 rounded-none border-2 border-[#444] px-2.5 py-0.5 text-xs font-black transition-all;
+    box-shadow: 2px 2px 0 #444;
+  }
+  .manga-tag:hover {
+    box-shadow: 3px 3px 0 #444;
+    transform: translate(-1px, -1px);
+  }
+  .manga-tag-red {
+    @apply bg-[#ff6b6b] text-white;
+  }
+  .manga-tag-cyan {
+    @apply bg-[#4ecdc4] text-white;
+  }
+  .manga-tag-yellow {
+    @apply bg-[#ffe66d] text-[#333];
+  }
+
+  /* Manga Button */
+  .manga-btn {
+    @apply inline-flex items-center rounded-none border-2 border-[#444] px-4 py-2 text-sm font-black transition-all;
+    box-shadow: 3px 3px 0 #444;
+  }
+  .manga-btn:hover {
+    box-shadow: 5px 5px 0 #444;
+    transform: translate(-1px, -1px);
+  }
+  .manga-btn:active {
+    box-shadow: 1px 1px 0 #444;
+    transform: translate(2px, 2px);
+  }
+  .manga-btn-red {
+    @apply bg-[#ff6b6b] text-white;
+  }
+  .manga-btn-cyan {
+    @apply bg-[#4ecdc4] text-white;
+  }
+  .manga-btn-yellow {
+    @apply bg-[#ffe66d] text-[#333];
+  }
+
+  /* Manga Header — 导航栏漫画风格 */
+  .manga-header {
+    @apply bg-[#ff6b6b] border-b-3 border-solid border-[#444];
+  }
+  .manga-header .manga-nav-link {
+    @apply text-white font-black;
+    text-shadow: 1px 1px 0 #444;
+  }
+
+  /* Manga Badge — "NEW!" / "HOT!" 角标 */
+  .manga-badge {
+    @apply inline-flex items-center rounded-none border-2 border-[#444] px-2 py-0.5 text-[10px] font-black;
+    box-shadow: 2px 2px 0 #444;
+    animation: manga-pop 0.3s ease;
+  }
+  .manga-badge-new {
+    @apply bg-[#4ecdc4] text-white;
+  }
+  .manga-badge-hot {
+    @apply bg-[#ff6b6b] text-white;
+  }
+
+  /* Manga Continue — "つづく →" */
+  .manga-continue {
+    @apply text-[#ff6b6b] font-black tracking-widest text-xs;
+  }
+
+  /* Manga Divider */
+  .manga-divider {
+    @apply border-t-2 border-dashed border-[#444];
+  }
+
+  /* Manga Section Title — 带装饰的标题 */
+  .manga-section-title {
+    @apply relative font-black text-foreground text-sm flex items-center gap-2;
+  }
+  .manga-section-title::before {
+    content: '◆';
+    @apply text-[#ff6b6b] text-xs;
+  }
+
+  /* Manga Prose — 文章内容漫画化 */
+  .manga-prose {
+    @apply prose max-w-none;
+  }
+  .manga-prose blockquote {
+    @apply border-l-4 border-[#ff6b6b] bg-[#fff5f5] not-italic font-bold;
+    box-shadow: 3px 3px 0 #e0e0e0;
+  }
+  .manga-prose code {
+    @apply bg-[#f5f5f5] border border-[#ddd] rounded-none text-[#333];
+  }
+
+  /* Manga Footer */
+  .manga-footer {
+    @apply bg-[#2a2a2a] border-t-3 border-solid border-[#444] text-[#aaa];
+  }
+}
+
+/* Manga keyframe */
+@keyframes manga-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Manga dark mode overrides */
+.dark .manga-card,
+[data-theme="dark"] .manga-card {
+  @apply bg-[#2a2a3e] border-[#555];
+  box-shadow: 4px 4px 0 #555;
+}
+.dark .manga-card:hover,
+[data-theme="dark"] .manga-card:hover {
+  box-shadow: 6px 6px 0 #555;
+}
+.dark .manga-bubble,
+[data-theme="dark"] .manga-bubble {
+  @apply bg-[#2a2a3e] border-[#555];
+  box-shadow: 3px 3px 0 #555;
+}
+.dark .manga-bubble::after,
+[data-theme="dark"] .manga-bubble::after {
+  border-bottom-color: #2a2a3e;
+}
+.dark .manga-btn,
+[data-theme="dark"] .manga-btn {
+  @apply border-[#555];
+  box-shadow: 3px 3px 0 #555;
+}
+.dark .manga-tag,
+[data-theme="dark"] .manga-tag {
+  @apply border-[#555];
+  box-shadow: 2px 2px 0 #555;
+}
+
+/* Force manga border-2 → border-3 (3px) where used */
+.border-3 {
+  border-width: 3px;
 }
 
 /* ==================== Alpine.js 支持 ==================== */

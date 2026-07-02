@@ -1,7 +1,7 @@
 {% load blog_tags %}
 {% load i18n %}
 
-<header class="sticky top-0 z-50 border-b border-border/60 dark:border-white/[0.08] bg-background/80 backdrop-blur-xl"
+<header class="sticky top-0 z-50 border-b-3 border-solid border-[#444] bg-[#e53935] dark:bg-[#2a2a3e] dark:border-b-[#e53935]"
         @keydown.ctrl.k.window.prevent="document.getElementById('header-search-input')?.focus()"
         @keydown.meta.k.window.prevent="document.getElementById('header-search-input')?.focus()">
     {# Skip to content link for accessibility #}
@@ -12,11 +12,11 @@
 
         {# Logo #}
         <a href="/" class="group flex flex-col items-end leading-none">
-            <span class="text-2xl sm:text-3xl lg:text-[2.125rem] font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
+            <span class="text-2xl sm:text-3xl lg:text-[2.125rem] font-black tracking-tight text-white transition-colors group-hover:text-[#ffe66d]" style="text-shadow: 2px 2px 0 #444;">
                 {{ SITE_NAME }}
             </span>
             {% if SITE_DESCRIPTION %}
-            <span class="text-[11px] text-muted-foreground tracking-wide">
+            <span class="text-[11px] text-white/70 tracking-wide">
                 {{ SITE_DESCRIPTION }}
             </span>
             {% endif %}
@@ -32,7 +32,7 @@
              hx-push-url="true">
             {% current_nav_item request as nav_active %}
             <a href="{% url 'blog:index' %}"
-               class="relative rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200 hover:bg-secondary hover:text-foreground {% if nav_active == 'index' %}text-primary bg-primary/5{% else %}text-muted-foreground{% endif %}"
+               class="relative rounded-lg px-3.5 py-2 text-sm font-bold transition-all duration-200 hover:bg-white/20 hover:text-[#ffe66d] {% if nav_active == 'index' %}text-[#ffe66d] bg-white/10{% else %}text-white/80{% endif %}"
                {% if nav_active == 'index' %}aria-current="page"{% endif %}>
                 {% trans 'index' %}
                 {% if nav_active == 'index' %}<span class="absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-primary"></span>{% endif %}
@@ -49,7 +49,7 @@
                     <button @click="open = !open"
                             :aria-expanded="open.toString()"
                             aria-haspopup="true"
-                            class="relative flex items-center gap-1 rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200 hover:bg-secondary hover:text-foreground {% if request.path == category.get_absolute_url %}text-primary bg-primary/5{% else %}text-muted-foreground{% endif %}">
+                            class="relative flex items-center gap-1 rounded-lg px-3.5 py-2 text-sm font-bold transition-all duration-200 hover:bg-white/20 hover:text-[#ffe66d] {% if request.path == category.get_absolute_url %}text-[#ffe66d] bg-white/10{% else %}text-white/80{% endif %}">
                         {{ category.name }}
                         <svg class="size-3.5 transition-transform duration-200" :class="open ? 'rotate-180' : ''" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -89,7 +89,7 @@
             <span class="mx-1 h-4 w-px bg-border/60"></span>
 
             <a href="{% url 'blog:archives' %}"
-               class="relative rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200 hover:bg-secondary hover:text-foreground {% if nav_active == 'archives' %}text-primary bg-primary/5{% else %}text-muted-foreground{% endif %}"
+               class="relative rounded-lg px-3.5 py-2 text-sm font-bold transition-all duration-200 hover:bg-white/20 hover:text-[#ffe66d] {% if nav_active == 'archives' %}text-[#ffe66d] bg-white/10{% else %}text-white/80{% endif %}"
                {% if nav_active == 'archives' %}aria-current="page"{% endif %}>
                 归档
                 {% if nav_active == 'archives' %}<span class="absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-primary"></span>{% endif %}
@@ -103,19 +103,12 @@
                 </a>
             {% endfor %}
 
-            {# External: tools site #}
-            <span class="mx-2 h-4 w-px bg-border"></span>
-            <a href="https://tools.lylinux.net/" target="_blank" rel="noopener"
-               class="flex items-center gap-1 rounded-lg px-3.5 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground">
-                工具站
-                <svg class="size-3 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
         </nav>
 
         {# Desktop inline search bar #}
         <form action="{% url 'search' %}" method="get"
-              class="hidden lg:flex items-center gap-2 h-9 w-44 rounded-lg border border-border bg-secondary/60 px-3 transition-all duration-300 focus-within:w-56 focus-within:border-primary/40 focus-within:bg-background focus-within:ring-2 focus-within:ring-primary/20">
-            <svg class="size-4 shrink-0 text-muted-foreground pointer-events-none"
+              class="hidden lg:flex items-center gap-2 h-9 w-44 rounded-lg border-2 border-white/20 bg-white/10 px-3 transition-all duration-300 focus-within:w-56 focus-within:border-[#ffe66d]/60 focus-within:bg-white/15 focus-within:ring-2 focus-within:ring-[#ffe66d]/20">
+            <svg class="size-4 shrink-0 text-white/50 pointer-events-none"
                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -131,11 +124,11 @@
         {# Right: theme toggle + mobile menu #}
         <div class="ml-auto flex items-center gap-0.5 lg:ml-0">
             {# Theme toggle #}
-            <button class="size-9 rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            <button class="size-9 rounded-lg text-white/70 transition-colors hover:bg-white/20 hover:text-[#ffe66d]"
                     @click="window.themeManager && window.themeManager.toggle()"
                     aria-label="{% trans 'Toggle theme' %}">
                 {# Moon — shown in light mode #}
-                <svg class="size-[18px] mx-auto theme-icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="size-[18px] mx-auto theme-icon-moon text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                 </svg>
                 {# Sun — shown in dark mode #}
@@ -267,14 +260,6 @@
                 </a>
             {% endfor %}
 
-            {# External: tools site #}
-            <div class="my-1 border-t border-border/60"></div>
-            <a href="https://tools.lylinux.net/" target="_blank" rel="noopener"
-               @click="$store.nav.mobileOpen = false"
-               class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary">
-                <svg class="size-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                工具站
-            </a>
         </div>
     </nav>
 </header>

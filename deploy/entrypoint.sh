@@ -6,8 +6,19 @@ GROUP=root
 NUM_WORKERS=1
 DJANGO_WSGI_MODULE=djangoblog.wsgi
 
-
 echo "Starting $NAME as `whoami`"
+
+# 如果有挂载的源代码，拷贝进来使修改立即生效
+if [ -d /host-source/djangoblog ]; then
+  echo "Copying source code from /host-source..."
+  # 保存前端构建产物（Docker build阶段生成，宿主可能没有）
+  cp -r $DJANGODIR/blog/static/blog/dist /tmp/frontend-dist/ 2>/dev/null || true
+  # 拷贝新代码
+  cp -a /host-source/. $DJANGODIR/
+  # 恢复前端构建产物
+  cp -r /tmp/frontend-dist/. $DJANGODIR/blog/static/blog/dist/ 2>/dev/null || true
+  echo "Source code synced."
+fi
 
 cd $DJANGODIR
 

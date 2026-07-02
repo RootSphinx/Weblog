@@ -44,6 +44,10 @@ CSRF_TRUSTED_ORIGINS = ['http://example.com']
 
 INSTALLED_APPS = [
     # 'django.contrib.admin',
+         # General use templates & template tags (should appear first)
+    # 'adminlte3',
+     # Optional: Django admin theme (must be before django.contrib.admin)
+    # 'adminlte3_theme',
     'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
