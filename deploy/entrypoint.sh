@@ -20,6 +20,13 @@ if [ -d /host-source/djangoblog ]; then
   echo "Source code synced."
 fi
 
+echo "Waiting for MySQL database to be ready..."
+# 不断重试连接，直到成功为止才继续往下执行 manage.py
+while ! python -c "import socket; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.connect(('db', 3306))" 2>/dev/null; do
+    sleep 2
+done
+echo "MySQL is ready!"
+
 cd $DJANGODIR
 
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
