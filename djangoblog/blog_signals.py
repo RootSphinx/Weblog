@@ -90,6 +90,8 @@ def model_post_save_callback(
             except Exception as ex:
                 logger.error("notify sipder", ex)
 
+    from blog.models import SideBar, Links, SidebarSection
+
     # 评论相关的缓存清理
     if isinstance(instance, Comment):
         if instance.is_enable:
@@ -113,6 +115,11 @@ def model_post_save_callback(
             cache.delete('seo_processor')
 
             _thread.start_new_thread(send_comment_email, (instance,))
+
+    # 侧边栏相关模型 — 没有 get_full_url，需在通用分支之前单独处理
+    elif isinstance(instance, (SideBar, Links, SidebarSection)):
+        delete_sidebar_cache()
+        cache.delete('seo_processor')
 
     # 文章相关的精细化缓存清理
     elif 'get_full_url' in dir(instance):

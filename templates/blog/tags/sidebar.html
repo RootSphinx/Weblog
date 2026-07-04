@@ -3,129 +3,23 @@
 
 <aside class="flex flex-col gap-4">
 
-    {# 1. 最近文章 #}
-    {% if recent_articles %}
-    <div class="border-3 border-solid border-[#1a1a1a] bg-white dark:bg-[#2a2a3e] dark:border-[#555] p-4 shadow-[3px_3px_0_#1a1a1a] dark:shadow-[3px_3px_0_#555]">
-        <h3 class="mb-3 flex items-center gap-2 text-xs font-black text-[#1a1a1a] dark:text-white uppercase tracking-wider m-0">
-            <span class="border-2 border-[#1a1a1a] dark:border-[#555] bg-[#e53935] text-white px-1.5 py-0.5 text-[10px]">NEW</span>
-            最近文章
-        </h3>
-        <ul class="m-0 flex flex-col gap-2 p-0 list-none">
-            {% for a in recent_articles %}
-                <li>
-                    <a href="{{ a.get_absolute_url }}" class="group flex flex-col gap-0.5">
-                        <span class="line-clamp-2 text-sm font-bold text-[#333] dark:text-[#ccc] transition-colors group-hover:text-[#e53935] dark:group-hover:text-[#ff6b6b]">
-                            {{ a.title }}
-                        </span>
-                        <span class="text-[10px] font-mono text-[#aaa]">
-                            {{ a.pub_time|date:"m-d" }}
-                        </span>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-
-    {# 2. 热门文章 #}
-    {% if most_read_articles %}
-    <div class="border-3 border-solid border-[#1a1a1a] bg-white dark:bg-[#2a2a3e] dark:border-[#555] p-4 shadow-[3px_3px_0_#1a1a1a] dark:shadow-[3px_3px_0_#555]">
-        <h3 class="mb-3 flex items-center gap-2 text-xs font-black text-[#1a1a1a] dark:text-white uppercase tracking-wider m-0">
-            <span class="border-2 border-[#1a1a1a] dark:border-[#555] bg-[#ffd54f] text-[#333] px-1.5 py-0.5 text-[10px]">HOT</span>
-            热门文章
-        </h3>
-        <ul class="m-0 flex flex-col gap-2 p-0 list-none">
-            {% for a in most_read_articles %}
-                <li class="flex gap-2.5">
-                    <span class="flex size-5 shrink-0 items-center justify-center text-[10px] font-black {% if forloop.counter <= 3 %}border-2 border-[#e53935] bg-[#e53935]/5 text-[#e53935]{% else %}text-[#aaa]{% endif %}">
-                        {{ forloop.counter }}
-                    </span>
-                    <a href="{{ a.get_absolute_url }}" class="group min-w-0 flex-1">
-                        <span class="line-clamp-2 text-sm font-bold text-[#333] dark:text-[#ccc] transition-colors group-hover:text-[#e53935] dark:group-hover:text-[#ff6b6b]">
-                            {{ a.title }}
-                        </span>
-                        <span class="text-[10px] font-mono text-[#aaa]">{{ a.views }} views</span>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-
-    {# 3. 标签云 #}
-    {% if sidebar_tags %}
-    <div class="border-3 border-solid border-[#1a1a1a] bg-white dark:bg-[#2a2a3e] dark:border-[#555] p-4 shadow-[3px_3px_0_#1a1a1a] dark:shadow-[3px_3px_0_#555]">
-        <h3 class="mb-3 flex items-center gap-2 text-xs font-black text-[#1a1a1a] dark:text-white uppercase tracking-wider m-0">
-            <span class="border-2 border-[#1a1a1a] dark:border-[#555] bg-[#00bcd4] text-white px-1.5 py-0.5 text-[10px]">TAG</span>
-            标签云
-        </h3>
-        <div class="flex flex-wrap gap-1.5">
-            {% for tag, count, size in sidebar_tags %}
-                <a href="{{ tag.get_absolute_url }}"
-                   class="inline-flex items-center gap-1 border-2 border-[#1a1a1a] dark:border-[#555] px-2 py-0.5 font-bold transition-all hover:shadow-[2px_2px_0_#ccc] hover:-translate-x-px hover:-translate-y-px
-                   {% if size >= 18 %}bg-[#e53935] text-white text-sm
-                   {% elif size >= 13 %}bg-[#f5f0eb] dark:bg-[#333] text-[#555] dark:text-[#ccc] text-xs
-                   {% else %}bg-white dark:bg-[#2a2a3e] text-[#888] dark:text-[#999] text-xs{% endif %}">
-                    {{ tag.name }}
-                </a>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-
-    {# 4. 外部链接 #}
-    {% if sidabar_links %}
-    <div class="border-3 border-solid border-[#1a1a1a] bg-white dark:bg-[#2a2a3e] dark:border-[#555] p-4 shadow-[3px_3px_0_#1a1a1a] dark:shadow-[3px_3px_0_#555]">
-        <h3 class="mb-3 flex items-center gap-2 text-xs font-black text-[#1a1a1a] dark:text-white uppercase tracking-wider m-0">
-            <span class="border-2 border-[#1a1a1a] dark:border-[#555] bg-[#f5f0eb] dark:bg-[#333] text-[#555] dark:text-[#ccc] px-1.5 py-0.5 text-[10px]">LINK</span>
-            外部链接
-        </h3>
-        <ul class="m-0 flex flex-col gap-1.5 p-0 list-none">
-            {% for link in sidabar_links %}
-                <li>
-                    <a href="{{ link.link }}" target="_blank" rel="noopener noreferrer"
-                       class="flex items-center gap-2 text-sm font-bold text-[#555] dark:text-[#aaa] transition-colors hover:text-[#e53935] dark:hover:text-[#ff6b6b]">
-                        <svg class="size-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                        </svg>
-                        {{ link.name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-
-    {# 5. 一言 Hitokoto #}
-    <div class="border-3 border-solid border-[#1a1a1a] bg-[#fef5f5] dark:bg-[#3a2a2a] dark:border-[#555] p-4 shadow-[3px_3px_0_#1a1a1a] dark:shadow-[3px_3px_0_#555] relative"
-         x-data="{ hitokoto: '', fromWho: '', from: '', loading: true }"
-         x-init="fetch('https://api.timelessq.com/sentence?type=a,b,c')
-             .then(r => r.json())
-             .then(json => {
-                 var d = json.data || json;
-                 hitokoto = d.hitokoto || '';
-                 fromWho = d.from_who || '';
-                 from = d.from || '';
-                 loading = false;
-             })
-             .catch(() => {
-                 hitokoto = 'コードは詩であり、バグは韻である。';
-                 fromWho = 'RootSphinx';
-                 from = 'DjangoBlog';
-                 loading = false;
-             })">
-        <h3 class="mb-2 flex items-center gap-2 text-xs font-black text-[#1a1a1a] dark:text-white uppercase tracking-wider m-0">
-            <span class="border-2 border-[#1a1a1a] dark:border-[#555] bg-[#e53935] text-white px-1.5 py-0.5 text-[10px]">一言</span>
-        </h3>
-        {# Speech bubble pointer #}
-        <div class="absolute -bottom-2 right-6 w-0 h-0 border-l-[8px] border-r-[8px] border-t-[10px] border-l-transparent border-r-transparent border-t-[#e53935] dark:border-t-[#ff6b6b]"></div>
-        <p class="m-0 text-sm leading-relaxed text-[#555] dark:text-[#ccc] italic" x-text="loading ? '加载中...' : '“' + hitokoto + '”'"></p>
-        <p class="mt-1.5 text-[11px] font-bold text-[#aaa] dark:text-[#888] text-right" x-show="!loading">
-            <span x-text="'—— ' + fromWho"></span>
-            <template x-if="from">
-                <span x-text="' 《' + from + '》'"></span>
-            </template>
-        </p>
-    </div>
+    {% for item in sidebar_config %}
+        {% if item.type == 'recent' %}
+            {% include 'blog/tags/sidebar_recent.html' %}
+        {% elif item.type == 'hot' %}
+            {% include 'blog/tags/sidebar_hot.html' %}
+        {% elif item.type == 'tags' %}
+            {% include 'blog/tags/sidebar_tags.html' %}
+        {% elif item.type == 'links' %}
+            {% include 'blog/tags/sidebar_links.html' %}
+        {% elif item.type == 'hitokoto' %}
+            {% include 'blog/tags/sidebar_hitokoto.html' %}
+        {% elif item.type == 'widget' and item.widget %}
+            {% include item.template with widget=item.widget %}
+        {% endif %}
+    {% empty %}
+        {# 无配置时回退：显示一言作为兜底 #}
+        {% include 'blog/tags/sidebar_hitokoto.html' %}
+    {% endfor %}
 
 </aside>

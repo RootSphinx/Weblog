@@ -45,6 +45,7 @@ admin_site.register(Category, CategoryAdmin)
 admin_site.register(Tag, TagAdmin)
 admin_site.register(Links, LinksAdmin)
 admin_site.register(SideBar, SideBarAdmin)
+admin_site.register(SidebarSection, SidebarSectionAdmin)
 admin_site.register(BlogSettings, BlogSettingsAdmin)
 
 admin_site.register(commands, CommandsAdmin)

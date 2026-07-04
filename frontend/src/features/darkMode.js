@@ -9,6 +9,7 @@ const ENABLE_SYSTEM = true;
 
 /**
  * 获取首选主题
+ * 首次访问始终默认为亮色模式，之后遵循用户保存的偏好
  */
 function getPreferredTheme() {
     // 1. 优先使用用户保存的偏好
@@ -17,27 +18,22 @@ function getPreferredTheme() {
         return saved === 'dark' ? 'dark' : 'light';
     }
 
-    // 2. 如果启用系统偏好跟随，检测系统设置
-    if (ENABLE_SYSTEM && window.matchMedia) {
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
-        }
-    }
-
-    // 3. 默认主题
+    // 2. 首次访问默认亮色
     return 'light';
 }
 
 /**
  * 应用主题
+ * 仅操作 html 元素 — 所有 CSS 选择器通过 html[data-theme] 生效，无需操作 body
  */
 function applyTheme(theme) {
-    if (theme === 'dark') {
+    const isDark = theme === 'dark';
+    if (isDark) {
         document.documentElement.setAttribute(THEME_ATTR, 'dark');
-        document.body.setAttribute(THEME_ATTR, 'dark');
+        document.documentElement.classList.add('dark');
     } else {
         document.documentElement.removeAttribute(THEME_ATTR);
-        document.body.removeAttribute(THEME_ATTR);
+        document.documentElement.classList.remove('dark');
     }
 }
 

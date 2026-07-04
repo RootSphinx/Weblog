@@ -252,27 +252,30 @@ def load_articletags(article):
 def load_sidebar(user, linktype):
     """
     加载侧边栏
-    :return:
+    缓存策略：文章/标签等重查询缓存 1 小时；SideBar / Links / SidebarSection 每请求实时查询
     """
     value = cache.get("sidebar" + linktype)
     if value:
-        value['user'] = user
-        return value
-    else:
-        logger.info('load sidebar')
+        # 验证缓存数据是否有效（防止空数据被永久缓存）
+        has_content = (
+            value.get('recent_articles') or
+            value.get('most_read_articles') or
+            value.get('sidebar_tags')
+        )
+        if not has_content:
+            logger.info('stale empty sidebar cache for %s, forcing refresh', linktype)
+            value = None
+
+    if not value:
+        logger.info('load sidebar (cache miss)')
         from djangoblog.utils import get_blog_setting
         blogsetting = get_blog_setting()
 
-        # 优化：添加select_related/prefetch_related减少查询
         recent_articles = Article.objects.filter(
             status='p'
         ).select_related('author', 'category')[:blogsetting.sidebar_article_count]
 
         sidebar_categorys = Category.objects.all()
-
-        extra_sidebars = SideBar.objects.filter(
-            is_enable=True
-        ).order_by('sequence')
 
         most_read_articles = Article.objects.filter(
             status='p'
@@ -282,14 +285,10 @@ def load_sidebar(user, linktype):
 
         dates = Article.objects.datetimes('creation_time', 'month', order='DESC')
 
-        links = Links.objects.filter(is_enable=True).filter(
-            Q(show_type=str(linktype)) | Q(show_type=LinkShowType.A)
-        )
-
         commment_list = Comment.objects.filter(
             is_enable=True
         ).select_related('author').order_by('-id')[:blogsetting.sidebar_comment_count]
-        # 标签云 — 按文章数排序，取 top 20，size = (count/avg)*5+10
+
         increment = 5
         tags = Tag.objects.all()
         sidebar_tags = None
@@ -309,18 +308,110 @@ def load_sidebar(user, linktype):
             'most_read_articles': most_read_articles,
             'article_dates': dates,
             'sidebar_comments': commment_list,
-            'sidabar_links': links,
             'show_google_adsense': blogsetting.show_google_adsense,
             'google_adsense_codes': blogsetting.google_adsense_codes,
             'open_site_comment': blogsetting.open_site_comment,
             'show_gongan_code': blogsetting.show_gongan_code,
             'sidebar_tags': sidebar_tags,
-            'extra_sidebars': extra_sidebars
         }
-        cache.set("sidebar" + linktype, value, 60 * 60 * 60 * 3)
+        cache.set("sidebar" + linktype, value, 60 * 60)
         logger.info('set sidebar cache.key:{key}'.format(key="sidebar" + linktype))
-        value['user'] = user
-        return value
+
+    # === 以下数据不缓存，每次实时查询（保证 admin 修改即时生效） ===
+
+    # SideBar 自定义组件 — 数据量极小，实时查询
+    extra_sidebars = SideBar.objects.filter(is_enable=True).order_by('sequence')
+
+    # 外部链接 — 数据量极小，按页面类型过滤
+    links = Links.objects.filter(is_enable=True).filter(
+        Q(show_type=str(linktype)) | Q(show_type=LinkShowType.A)
+    )
+
+    value['user'] = user
+    value['extra_sidebars'] = extra_sidebars
+    value['sidabar_links'] = links
+    value['sidebar_config'] = _build_sidebar_config(linktype, extra_sidebars)
+    return value
+
+
+def _build_sidebar_config(linktype, extra_sidebars):
+    """
+    构建侧边栏区块配置列表（按 order 排序）。
+    每个元素为 dict: {'type': section_key, 'template': '...', 'widget': obj|None}
+    不被缓存的轻量配置，确保 admin 修改即时生效。
+    """
+    from blog.models import SidebarSection
+
+    config = []
+    is_index = str(linktype) == 'i'
+
+    # 查询所有启用的区块配置
+    sections = list(SidebarSection.objects.filter(is_enable=True).order_by('order'))
+
+    # 固定的 section→template 映射
+    TEMPLATE_MAP = {
+        'recent': 'blog/tags/sidebar_recent.html',
+        'hot': 'blog/tags/sidebar_hot.html',
+        'tags': 'blog/tags/sidebar_tags.html',
+        'links': 'blog/tags/sidebar_links.html',
+        'hitokoto': 'blog/tags/sidebar_hitokoto.html',
+    }
+
+    # 如果没有任何配置行（首次安装），使用默认顺序作为回退
+    if not sections:
+        _ensure_default_sidebar_sections()
+        sections = list(SidebarSection.objects.filter(is_enable=True).order_by('order'))
+
+    for sec in sections:
+        # 根据 linktype 判断是否在该页面显示
+        if is_index:
+            if not sec.show_on_index:
+                continue
+        else:
+            if not sec.show_on_post:
+                continue
+
+        template = TEMPLATE_MAP.get(sec.section)
+        if template:
+            config.append({
+                'type': sec.section,
+                'template': template,
+                'widget': None,
+            })
+
+    # 追加额外的自定义 SideBar 组件
+    for widget in extra_sidebars:
+        config.append({
+            'type': 'widget',
+            'template': 'blog/tags/sidebar_widget.html',
+            'widget': widget,
+        })
+
+    return config
+
+
+def _ensure_default_sidebar_sections():
+    """首次使用时自动创建默认的 5 个侧边栏区块（全部启用，默认排序）"""
+    from blog.models import SidebarSection
+
+    defaults = [
+        ('recent', 1),
+        ('hot', 2),
+        ('tags', 3),
+        ('links', 4),
+        ('hitokoto', 5),
+    ]
+    created = 0
+    for section_key, order in defaults:
+        _, created_flag = SidebarSection.objects.get_or_create(
+            section=section_key,
+            defaults={'order': order, 'is_enable': True,
+                      'show_on_index': True, 'show_on_post': True}
+        )
+        if created_flag:
+            created += 1
+    if created:
+        logger.info('Auto-created %d default SidebarSection rows', created)
 
 
 @register.inclusion_tag('blog/tags/article_meta_info.html')

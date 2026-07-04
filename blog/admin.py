@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 # Register your models here.
-from .models import Article, Category, Tag, Links, SideBar, BlogSettings
+from .models import Article, Category, Tag, Links, SideBar, SidebarSection, BlogSettings
 
 
 class ArticleForm(forms.ModelForm):
@@ -108,6 +108,12 @@ class LinksAdmin(admin.ModelAdmin):
 class SideBarAdmin(admin.ModelAdmin):
     list_display = ('name', 'content', 'is_enable', 'sequence')
     exclude = ('last_mod_time', 'creation_time')
+
+
+class SidebarSectionAdmin(admin.ModelAdmin):
+    list_display = ('section', 'is_enable', 'show_on_index', 'show_on_post', 'order')
+    list_editable = ('is_enable', 'show_on_index', 'show_on_post', 'order')
+    list_filter = ('is_enable', 'show_on_index', 'show_on_post')
 
 
 class BlogSettingsAdmin(admin.ModelAdmin):

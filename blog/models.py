@@ -315,6 +315,36 @@ class SideBar(models.Model):
         return self.name
 
 
+class SidebarSection(models.Model):
+    """侧边栏区块管理 — 控制各区块的启用状态、显示页面和排序"""
+    SECTION_TYPES = (
+        ('recent', _('最近文章')),
+        ('hot', _('热门文章')),
+        ('tags', _('标签云')),
+        ('links', _('外部链接')),
+        ('hitokoto', _('一言')),
+    )
+
+    section = models.CharField(
+        _('section'),
+        max_length=20,
+        choices=SECTION_TYPES,
+        unique=True,
+        help_text=_('要控制的侧边栏区块'))
+    is_enable = models.BooleanField(_('is enable'), default=True)
+    show_on_index = models.BooleanField(_('show on index'), default=True)
+    show_on_post = models.BooleanField(_('show on article'), default=True)
+    order = models.IntegerField(_('order'), default=0)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = _('sidebar section')
+        verbose_name_plural = _('sidebar sections')
+
+    def __str__(self):
+        return str(dict(self.SECTION_TYPES).get(self.section, self.section))
+
+
 class BlogSettings(models.Model):
     """blog的配置"""
 

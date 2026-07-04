@@ -30,9 +30,6 @@
             function getPreferredTheme() {
                 const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved !== null) return saved === 'dark' ? 'dark' : 'light';
-                if (ENABLE_SYSTEM && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    return 'dark';
-                }
                 return 'light';
             }
 

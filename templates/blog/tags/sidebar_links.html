@@ -1,0 +1,24 @@
+{% load blog_tags %}
+{% load i18n %}
+{# 外部链接 #}
+{% if sidabar_links %}
+<div class="border-3 border-solid border-[#1a1a1a] bg-white dark:bg-[#2a2a3e] dark:border-[#555] p-4 shadow-[3px_3px_0_#1a1a1a] dark:shadow-[3px_3px_0_#555]">
+    <h3 class="mb-3 flex items-center gap-2 text-xs font-black text-[#1a1a1a] dark:text-white uppercase tracking-wider m-0">
+        <span class="border-2 border-[#1a1a1a] dark:border-[#555] bg-[#f5f0eb] dark:bg-[#333] text-[#555] dark:text-[#ccc] px-1.5 py-0.5 text-[10px]">LINK</span>
+        外部链接
+    </h3>
+    <ul class="m-0 flex flex-col gap-1.5 p-0 list-none">
+        {% for link in sidabar_links %}
+            <li>
+                <a href="{{ link.link }}" target="_blank" rel="noopener noreferrer"
+                   class="flex items-center gap-2 text-sm font-bold text-[#555] dark:text-[#aaa] transition-colors hover:text-[#e53935] dark:hover:text-[#ff6b6b]">
+                    <svg class="size-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    {{ link.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

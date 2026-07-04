@@ -1,0 +1,25 @@
+{% load blog_tags %}
+{% load i18n %}
+{# 最近文章 #}
+{% if recent_articles %}
+<div class="border-3 border-solid border-[#1a1a1a] bg-white dark:bg-[#2a2a3e] dark:border-[#555] p-4 shadow-[3px_3px_0_#1a1a1a] dark:shadow-[3px_3px_0_#555]">
+    <h3 class="mb-3 flex items-center gap-2 text-xs font-black text-[#1a1a1a] dark:text-white uppercase tracking-wider m-0">
+        <span class="border-2 border-[#1a1a1a] dark:border-[#555] bg-[#e53935] text-white px-1.5 py-0.5 text-[10px]">NEW</span>
+        最近文章
+    </h3>
+    <ul class="m-0 flex flex-col gap-2 p-0 list-none">
+        {% for a in recent_articles %}
+            <li>
+                <a href="{{ a.get_absolute_url }}" class="group flex flex-col gap-0.5">
+                    <span class="line-clamp-2 text-sm font-bold text-[#333] dark:text-[#ccc] transition-colors group-hover:text-[#e53935] dark:group-hover:text-[#ff6b6b]">
+                        {{ a.title }}
+                    </span>
+                    <span class="text-[10px] font-mono text-[#aaa]">
+                        {{ a.pub_time|date:"m-d" }}
+                    </span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

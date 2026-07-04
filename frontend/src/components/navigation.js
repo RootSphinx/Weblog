@@ -74,15 +74,26 @@ export default () => ({
     }
   },
 
-  // ==================== 主题切换（与dark_mode插件配合） ====================
+  // ==================== 主题切换 ====================
   toggleTheme() {
-    const html = document.documentElement;
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-
-    console.log('🌓 Theme switched to:', newTheme);
+    // 委托给 window.themeManager，与 nav.html 模板保持一致
+    if (window.themeManager && typeof window.themeManager.toggle === 'function') {
+      window.themeManager.toggle();
+    } else {
+      // 降级：手动切换
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      if (newTheme === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        html.classList.add('dark');
+      } else {
+        html.removeAttribute('data-theme');
+        html.classList.remove('dark');
+      }
+      localStorage.setItem('dark-mode-enabled', newTheme);
+      window.__THEME__ = newTheme;
+    }
+    console.log('🌓 Theme switched');
   },
 });

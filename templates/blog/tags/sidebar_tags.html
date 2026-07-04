@@ -1,0 +1,22 @@
+{% load blog_tags %}
+{% load i18n %}
+{# 标签云 #}
+{% if sidebar_tags %}
+<div class="border-3 border-solid border-[#1a1a1a] bg-white dark:bg-[#2a2a3e] dark:border-[#555] p-4 shadow-[3px_3px_0_#1a1a1a] dark:shadow-[3px_3px_0_#555]">
+    <h3 class="mb-3 flex items-center gap-2 text-xs font-black text-[#1a1a1a] dark:text-white uppercase tracking-wider m-0">
+        <span class="border-2 border-[#1a1a1a] dark:border-[#555] bg-[#00bcd4] text-white px-1.5 py-0.5 text-[10px]">TAG</span>
+        标签云
+    </h3>
+    <div class="flex flex-wrap gap-1.5">
+        {% for tag, count, size in sidebar_tags %}
+            <a href="{{ tag.get_absolute_url }}"
+               class="inline-flex items-center gap-1 border-2 border-[#1a1a1a] dark:border-[#555] px-2 py-0.5 font-bold transition-all hover:shadow-[2px_2px_0_#ccc] hover:-translate-x-px hover:-translate-y-px
+               {% if size >= 18 %}bg-[#e53935] text-white text-sm
+               {% elif size >= 13 %}bg-[#f5f0eb] dark:bg-[#333] text-[#555] dark:text-[#ccc] text-xs
+               {% else %}bg-white dark:bg-[#2a2a3e] text-[#888] dark:text-[#999] text-xs{% endif %}">
+                {{ tag.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
